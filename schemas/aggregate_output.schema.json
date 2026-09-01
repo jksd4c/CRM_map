@@ -1,0 +1,38 @@
+{
+  "schema_version": "1.0",
+  "description": "Disclosure-checked aggregate output contract for the public presentation layer.",
+  "required_files": {
+    "figure2_state_duration_probability.csv": [
+      "cohort",
+      "state",
+      "u_years",
+      "probability",
+      "lower_95",
+      "upper_95"
+    ],
+    "figure3_directed_transitions.csv": [
+      "section",
+      "transition_stage",
+      "state_transition",
+      "entering_disease",
+      "cohort",
+      "annual_rate_per_100py",
+      "rate_lower_95",
+      "rate_upper_95",
+      "probability_5y",
+      "probability_lower_95",
+      "probability_upper_95"
+    ]
+  },
+  "main_table_directory": "main_tables",
+  "supplementary_table_directory": "supplementary_tables",
+  "prohibited_content": [
+    "participant-level rows",
+    "direct identifiers",
+    "indirect identifiers",
+    "serialized fitted model objects",
+    "covariance matrices, Hessians, or observed-information matrices",
+    "optimizer checkpoints",
+    "private likelihood implementation"
+  ]
+}

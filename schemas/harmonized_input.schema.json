@@ -1,0 +1,23 @@
+{
+  "schema_version": "1.0",
+  "description": "Schema for locally held harmonized longitudinal records. No records are distributed with the shareable package.",
+  "required_columns": [
+    "cohort",
+    "record_key",
+    "visit_time",
+    "cardiovascular_state",
+    "kidney_state",
+    "diabetes_state",
+    "death_status",
+    "death_time_lower",
+    "death_time_upper"
+  ],
+  "state_values": [0, 1],
+  "allowed_cohorts": ["HRS", "CHARLS", "SHARE"],
+  "rules": [
+    "record_key is a local non-identifying analysis key",
+    "participant-level files remain outside the shareable package",
+    "source records are read only",
+    "only aggregate model outputs may cross into the public build stage"
+  ]
+}

@@ -1,0 +1,11 @@
+{
+  "cohort": "cohort",
+  "record_key": "record_key",
+  "visit_time": "visit_time",
+  "cardiovascular_state": "cardiovascular_state",
+  "kidney_state": "kidney_state",
+  "diabetes_state": "diabetes_state",
+  "death_status": "death_status",
+  "death_time_lower": "death_time_lower",
+  "death_time_upper": "death_time_upper"
+}
