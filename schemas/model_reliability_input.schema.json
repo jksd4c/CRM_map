@@ -1,0 +1,65 @@
+{
+  "schema_version": "1.0",
+  "description": "Aggregate diagnostics and synthetic validation records used to reproduce model-reliability summaries.",
+  "required_files": {
+    "nested_models.csv": [
+      "analysis_id",
+      "comparison",
+      "restricted_model",
+      "restricted_parameters",
+      "restricted_log_likelihood",
+      "full_model",
+      "full_parameters",
+      "full_log_likelihood"
+    ],
+    "model_diagnostics.csv": [
+      "analysis_id",
+      "model",
+      "parameter_count",
+      "observation_count",
+      "log_likelihood",
+      "reference_negative_log_likelihood",
+      "maximum_absolute_gradient",
+      "curvature_rank",
+      "curvature_dimension",
+      "condition_number",
+      "hard_boundary_parameters"
+    ],
+    "multistart_runs.csv": [
+      "analysis_id",
+      "start_id",
+      "negative_log_likelihood",
+      "success",
+      "maximum_parameter_difference_from_reference"
+    ],
+    "simulation_estimates.csv": [
+      "scenario",
+      "method",
+      "metric",
+      "truth",
+      "estimate"
+    ],
+    "coverage_intervals.csv": [
+      "scenario",
+      "replicate",
+      "family",
+      "estimand",
+      "truth",
+      "lower_95",
+      "upper_95"
+    ],
+    "validation_checks.csv": [
+      "check_group",
+      "check_name",
+      "value",
+      "tolerance"
+    ]
+  },
+  "prohibited_content": [
+    "participant-level rows",
+    "serialized fit objects",
+    "curvature matrices",
+    "optimizer checkpoints",
+    "private likelihood implementation"
+  ]
+}

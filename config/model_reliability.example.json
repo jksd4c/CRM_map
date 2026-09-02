@@ -1,0 +1,18 @@
+{
+  "schema_version": "1.0",
+  "multistart": {
+    "finite_starts_required": 10,
+    "successful_starts_minimum": 9,
+    "equivalent_starts_minimum": 9,
+    "objective_equivalence_absolute_nll": 0.01,
+    "maximum_reference_nll_difference": 0.01,
+    "maximum_reference_parameter_difference": 0.05,
+    "maximum_absolute_gradient": 0.05,
+    "maximum_condition_number": 1000000.0,
+    "maximum_hard_boundary_parameters": 0
+  },
+  "coverage": {
+    "overall_acceptance_interval": [0.85, 1.0],
+    "minimum_family_coverage": 0.75
+  }
+}

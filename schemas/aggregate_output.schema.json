@@ -1,5 +1,5 @@
 {
-  "schema_version": "1.0",
+  "schema_version": "1.1",
   "description": "Disclosure-checked aggregate output contract for the public presentation layer.",
   "required_files": {
     "figure2_state_duration_probability.csv": [
@@ -26,6 +26,8 @@
   },
   "main_table_directory": "main_tables",
   "supplementary_table_directory": "supplementary_tables",
+  "model_reliability_directory": "model_reliability",
+  "model_reliability_schema": "schemas/model_reliability_input.schema.json",
   "prohibited_content": [
     "participant-level rows",
     "direct identifiers",

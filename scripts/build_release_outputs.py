@@ -14,6 +14,7 @@ if str(SRC) not in sys.path:
 from crmmap_public.figures import build_figure2, build_figure3  # noqa: E402
 from crmmap_public.io import relative_manifest, write_json  # noqa: E402
 from crmmap_public.privacy import audit_share_package  # noqa: E402
+from crmmap_public.reliability import build_model_reliability  # noqa: E402
 from crmmap_public.tables import build_table_outputs  # noqa: E402
 from crmmap_public.verify import validate_reference_inputs  # noqa: E402
 
@@ -39,9 +40,19 @@ def main() -> int:
     preflight_issues = audit_share_package(PACKAGE_ROOT)
     if preflight_issues:
         raise RuntimeError(f"Share-package audit failed: {preflight_issues}")
+    input_issues = audit_share_package(input_dir)
+    if input_issues:
+        raise RuntimeError(f"Aggregate-input audit failed: {input_issues}")
 
     validation = validate_reference_inputs(PACKAGE_ROOT, input_dir)
     outputs = build_table_outputs(input_dir, output_dir)
+    outputs.extend(
+        build_model_reliability(
+            input_dir / "model_reliability",
+            output_dir / "model_reliability",
+            PACKAGE_ROOT / "config" / "model_reliability.example.json",
+        )
+    )
     outputs.extend(
         build_figure2(
             input_dir / "figure2_state_duration_probability.csv",
@@ -67,6 +78,9 @@ def main() -> int:
     postflight_issues = audit_share_package(PACKAGE_ROOT)
     if postflight_issues:
         raise RuntimeError(f"Post-build share-package audit failed: {postflight_issues}")
+    output_issues = audit_share_package(output_dir)
+    if output_issues:
+        raise RuntimeError(f"Release-output audit failed: {output_issues}")
     return 0
 
 

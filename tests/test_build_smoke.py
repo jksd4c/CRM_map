@@ -13,6 +13,7 @@ if str(SRC) not in sys.path:
     sys.path.insert(0, str(SRC))
 
 from crmmap_public.figures import build_figure2, build_figure3  # noqa: E402
+from crmmap_public.reliability import build_model_reliability  # noqa: E402
 from crmmap_public.tables import build_table_outputs  # noqa: E402
 from synthetic_inputs import create_synthetic_inputs  # noqa: E402
 
@@ -29,6 +30,13 @@ class BuildSmokeTests(unittest.TestCase):
                 outputs = build_table_outputs(input_dir, output_dir)
                 self.assertEqual(12, len(outputs))
                 outputs.extend(
+                    build_model_reliability(
+                        input_dir / "model_reliability",
+                        output_dir / "model_reliability",
+                        PACKAGE_ROOT / "config" / "model_reliability.example.json",
+                    )
+                )
+                outputs.extend(
                     build_figure2(
                         input_dir / "figure2_state_duration_probability.csv",
                         output_dir / "figures",
@@ -43,7 +51,7 @@ class BuildSmokeTests(unittest.TestCase):
                 build_outputs.append(outputs)
 
             first_outputs, second_outputs = build_outputs
-            self.assertEqual(18, len(first_outputs))
+            self.assertEqual(25, len(first_outputs))
             for path in first_outputs + second_outputs:
                 self.assertTrue(path.is_file())
                 self.assertGreater(path.stat().st_size, 0)

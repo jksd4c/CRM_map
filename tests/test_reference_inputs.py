@@ -23,7 +23,7 @@ class ReferenceInputTests(unittest.TestCase):
             create_synthetic_inputs(input_dir)
             report = validate_reference_inputs(PACKAGE_ROOT, input_dir)
         self.assertEqual("PASS", report["status"])
-        self.assertEqual(14, len(report["files"]))
+        self.assertEqual(20, len(report["files"]))
 
 
 if __name__ == "__main__":

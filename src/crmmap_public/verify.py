@@ -92,6 +92,22 @@ def validate_reference_inputs(package_root: Path, input_dir: Path) -> dict[str, 
             }
         )
 
+    reliability_schema = package_root / "schemas" / "model_reliability_input.schema.json"
+    reliability_required = _required_files(reliability_schema)
+    for filename, columns in reliability_required.items():
+        path = input_dir / "model_reliability" / filename
+        rows = read_csv_rows(path)
+        actual_columns = list(rows[0]) if rows else []
+        missing = [column for column in columns if column not in actual_columns]
+        checks.append(
+            {
+                "file": f"model_reliability/{filename}",
+                "rows": len(rows),
+                "missing_columns": missing,
+                "sha256": sha256_file(path),
+            }
+        )
+
     table_groups = (
         ("main_tables", EXPECTED_MAIN_TABLE_FILES),
         ("supplementary_tables", EXPECTED_SUPPLEMENTARY_TABLE_FILES),
