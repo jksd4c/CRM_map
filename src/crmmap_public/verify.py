@@ -108,6 +108,22 @@ def validate_reference_inputs(package_root: Path, input_dir: Path) -> dict[str, 
             }
         )
 
+    weibull_schema = package_root / "schemas" / "weibull_aggregate_input.schema.json"
+    weibull_required = _required_files(weibull_schema)
+    for filename, columns in weibull_required.items():
+        path = input_dir / "weibull" / filename
+        rows = read_csv_rows(path)
+        actual_columns = list(rows[0]) if rows else []
+        missing = [column for column in columns if column not in actual_columns]
+        checks.append(
+            {
+                "file": f"weibull/{filename}",
+                "rows": len(rows),
+                "missing_columns": missing,
+                "sha256": sha256_file(path),
+            }
+        )
+
     table_groups = (
         ("main_tables", EXPECTED_MAIN_TABLE_FILES),
         ("supplementary_tables", EXPECTED_SUPPLEMENTARY_TABLE_FILES),

@@ -15,6 +15,7 @@ if str(SRC) not in sys.path:
 from crmmap_public.figures import build_figure2, build_figure3  # noqa: E402
 from crmmap_public.reliability import build_model_reliability  # noqa: E402
 from crmmap_public.tables import build_table_outputs  # noqa: E402
+from crmmap_public.weibull import build_weibull_outputs  # noqa: E402
 from synthetic_inputs import create_synthetic_inputs  # noqa: E402
 
 
@@ -37,6 +38,12 @@ class BuildSmokeTests(unittest.TestCase):
                     )
                 )
                 outputs.extend(
+                    build_weibull_outputs(
+                        input_dir / "weibull",
+                        output_dir / "weibull",
+                    )
+                )
+                outputs.extend(
                     build_figure2(
                         input_dir / "figure2_state_duration_probability.csv",
                         output_dir / "figures",
@@ -51,7 +58,7 @@ class BuildSmokeTests(unittest.TestCase):
                 build_outputs.append(outputs)
 
             first_outputs, second_outputs = build_outputs
-            self.assertEqual(25, len(first_outputs))
+            self.assertEqual(27, len(first_outputs))
             for path in first_outputs + second_outputs:
                 self.assertTrue(path.is_file())
                 self.assertGreater(path.stat().st_size, 0)

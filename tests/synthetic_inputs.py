@@ -7,6 +7,15 @@ from crmmap_public.tables import EXPECTED_MAIN_TABLE_FILES, EXPECTED_SUPPLEMENTA
 
 
 COHORTS = ("HRS", "CHARLS", "SHARE")
+PARAMETER_COLUMNS_FOR_SYNTHETIC_INPUTS = (
+    "analysis_id",
+    "origin_state",
+    "destination_state",
+    "outcome",
+    "rate_per_year",
+    "shape",
+    "support_max_years",
+)
 
 
 def _write_rows(path: Path, fieldnames: list[str], rows: list[dict[str, object]]) -> None:
@@ -260,4 +269,53 @@ def create_synthetic_inputs(root: Path) -> None:
                 "tolerance": 1e-6,
             },
         ],
+    )
+
+    weibull_dir = root / "weibull"
+    parameter_rows: list[dict[str, object]] = []
+    estimand_rows: list[dict[str, object]] = []
+    for cohort_index, cohort in enumerate(COHORTS):
+        for state_index, state in enumerate(("SC", "SR", "SM", "SCR", "SCM", "SRM", "SCRM")):
+            if state != "SCRM":
+                parameter_rows.append(
+                    {
+                        "analysis_id": cohort,
+                        "origin_state": state,
+                        "destination_state": f"{state}_NEXT",
+                        "outcome": "progression",
+                        "rate_per_year": 0.04 + 0.003 * cohort_index + 0.002 * state_index,
+                        "shape": 0.8 + 0.05 * (state_index % 3),
+                        "support_max_years": 10,
+                    }
+                )
+            parameter_rows.append(
+                {
+                    "analysis_id": cohort,
+                    "origin_state": state,
+                    "destination_state": "SX",
+                    "outcome": "death",
+                    "rate_per_year": 0.02 + 0.002 * cohort_index + 0.001 * state_index,
+                    "shape": 1.0 + 0.05 * (state_index % 2),
+                    "support_max_years": 10,
+                }
+            )
+            for duration in (0, 3, 5):
+                for horizon in (1, 3, 5):
+                    estimand_rows.append(
+                        {
+                            "analysis_id": cohort,
+                            "origin_state": state,
+                            "duration_years": duration,
+                            "horizon_years": horizon,
+                        }
+                    )
+    _write_rows(
+        weibull_dir / "weibull_parameters.csv",
+        list(PARAMETER_COLUMNS_FOR_SYNTHETIC_INPUTS),
+        parameter_rows,
+    )
+    _write_rows(
+        weibull_dir / "weibull_estimands.csv",
+        ["analysis_id", "origin_state", "duration_years", "horizon_years"],
+        estimand_rows,
     )

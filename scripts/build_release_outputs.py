@@ -17,6 +17,7 @@ from crmmap_public.privacy import audit_share_package  # noqa: E402
 from crmmap_public.reliability import build_model_reliability  # noqa: E402
 from crmmap_public.tables import build_table_outputs  # noqa: E402
 from crmmap_public.verify import validate_reference_inputs  # noqa: E402
+from crmmap_public.weibull import build_weibull_outputs  # noqa: E402
 
 
 def parse_args() -> argparse.Namespace:
@@ -51,6 +52,12 @@ def main() -> int:
             input_dir / "model_reliability",
             output_dir / "model_reliability",
             PACKAGE_ROOT / "config" / "model_reliability.example.json",
+        )
+    )
+    outputs.extend(
+        build_weibull_outputs(
+            input_dir / "weibull",
+            output_dir / "weibull",
         )
     )
     outputs.extend(

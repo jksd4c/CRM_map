@@ -1,0 +1,35 @@
+{
+  "schema_version": "1.0",
+  "description": "Aggregate Weibull transition parameters and requested state-duration estimands.",
+  "required_files": {
+    "weibull_parameters.csv": [
+      "analysis_id",
+      "origin_state",
+      "destination_state",
+      "outcome",
+      "rate_per_year",
+      "shape",
+      "support_max_years"
+    ],
+    "weibull_estimands.csv": [
+      "analysis_id",
+      "origin_state",
+      "duration_years",
+      "horizon_years"
+    ]
+  },
+  "parameterization": {
+    "cumulative_hazard": "(rate_per_year * duration_years) ** shape",
+    "outcomes": [
+      "progression",
+      "death"
+    ]
+  },
+  "prohibited_content": [
+    "participant-level rows",
+    "serialized fit objects",
+    "covariance matrices",
+    "optimizer checkpoints",
+    "private likelihood implementation"
+  ]
+}
