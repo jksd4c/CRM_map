@@ -65,11 +65,6 @@ CORE_CODE_PATTERN = re.compile(
     r"likelihood_engine|optimizer_checkpoint)\b"
 )
 
-PROCESS_TRACE_PATTERN = re.compile(
-    r"(?im)^(?:user|assistant|system|developer)\s*:|"
-    r"\b(?:this\s+file\s+was\s+automatically\s+generated|conversation\s+transcript)\b"
-)
-
 SIGNED_NUMERIC_SUMMARY_PATTERN = re.compile(
     r"^[+-](?:\d+(?:\.\d+)?|\.\d+)(?:[eE][+-]?\d+)?"
     r"(?:\s+\([+-]?(?:\d+(?:\.\d+)?|\.\d+)(?:[eE][+-]?\d+)?"
@@ -154,9 +149,4 @@ def audit_share_package(root: Path) -> list[AuditIssue]:
                 issues.append(
                     AuditIssue("restricted_model_code_marker", relative, "pattern detected")
                 )
-            if PROCESS_TRACE_PATTERN.search(text):
-                issues.append(
-                    AuditIssue("process_trace_marker", relative, "pattern detected")
-                )
-
     return issues

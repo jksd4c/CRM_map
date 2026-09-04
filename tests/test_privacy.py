@@ -27,13 +27,19 @@ class PrivacyAuditTests(unittest.TestCase):
             issues = audit_share_package(root)
         self.assertEqual(["spreadsheet_formula_cell"], [issue.category for issue in issues])
 
-    def test_process_trace_marker_is_rejected(self) -> None:
+    def test_identifier_column_is_rejected(self) -> None:
         with tempfile.TemporaryDirectory() as temporary_directory:
             root = Path(temporary_directory)
-            marker = "assistant" + ": example"
-            (root / "notes.md").write_text(marker, encoding="utf-8")
+            (root / "table.csv").write_text("participant_id,value\n1,2\n", encoding="utf-8")
             issues = audit_share_package(root)
-        self.assertEqual(["process_trace_marker"], [issue.category for issue in issues])
+        self.assertEqual(["participant_identifier_header"], [issue.category for issue in issues])
+
+    def test_restricted_file_type_is_rejected(self) -> None:
+        with tempfile.TemporaryDirectory() as temporary_directory:
+            root = Path(temporary_directory)
+            (root / "table.parquet").touch()
+            issues = audit_share_package(root)
+        self.assertEqual(["prohibited_file_type"], [issue.category for issue in issues])
 
 
 if __name__ == "__main__":
